@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.heima.repository.UserMapper">
+    <select id="findUserById" parameterType="integer" resultType="com.heima.domain.User">
+        SELECT * from USER WHERE id = #{id}
+    </select>
+
+    <!--User中有几个属性就改几个属性，其他不变-->
+    <update id="updateUser" parameterType="com.heima.domain.User">
+        UPDATE USER SET
+        /*suffixOverrides的作用是去除后缀","*/
+        <trim suffixOverrides=",">
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="age != null and age != ''">
+                age = #{age},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <insert id="insertUser" parameterType="com.heima.domain.User">
+        INSERT into User (name,age,address) VALUES (#{name},#{age},#{address})
+    </insert>
+</mapper>
